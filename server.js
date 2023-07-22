@@ -74,7 +74,33 @@ async function init() {
                     })
 
 
+
+
             } else if (data.action === choices[2]) {
+                console.log("update employee role")
+                inquirer
+                    .prompt([
+                        {
+                            type: 'list',
+                            message: 'Which employee would you like to update ?',
+                            name: 'update',
+                            choices: '',
+
+                        }, {
+                            type: 'list',
+                            message: 'Which role do you want to assign the selected employee.',
+                            name: 'update',
+                            choices: '',
+
+                        },
+
+                    ])
+                connection.query(
+                    'UPDATE * FROM `employee_info`',
+                    function (err, results, fields) {
+                        console.table(results); // results contains rows returned by server
+                    })
+
 
                 console.log('Update Employee Role chosen');
             } else if (data.action === choices[3]) {
