@@ -39,7 +39,7 @@ CREATE TABLE employee (
 CREATE VIEW employee_info AS
 SELECT 
   e.first_name,
-  e.last_name,
+  e.last_name,  
   r.title,
   d.department_name,
   r.salary
