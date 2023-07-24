@@ -3,7 +3,7 @@ VALUES (1, 'Junior', 'Florencio', 3, 1);
 
 -- Inserting into the department table
 INSERT INTO department (department_id, department_name)
-VALUES (1, 'IT');
+VALUES (1, 'Engineering');
 
 -- Inserting into the role table
 INSERT INTO role (role_id, title, salary, department_id)
