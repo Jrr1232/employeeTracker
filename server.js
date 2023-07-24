@@ -29,6 +29,7 @@ async function init() {
                 }
             );
         } else if (data.action === choices[1]) {
+            console.log('Add Employee');
             connection.query(
                 'SELECT first_name, last_name FROM employee',
                 function (err, results, fields) {
@@ -64,13 +65,14 @@ async function init() {
                             if (err) {
                                 console.error('Error selecting manager_id:', err);
                             } else {
-                                connection.query(`SELECT role_id from role WHERE title = '${data.role}' `), function (err, roleresult) {
+                                console.log(result)
+                                connection.query(`SELECT id from role WHERE title = '${data.role}' `), function (err, roleresult) {
                                     if (err) {
                                         console.error(err);
                                     }
                                     else {
                                         const sql = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
-
+                                        console.log(roleresult[0])
                                         const values = [data.fname, data.lname, roleresult[0], result[0]];
                                         console.log(data.fname)
                                         connection.query(sql, values, function (err, result) {
@@ -188,7 +190,7 @@ async function init() {
             ]).then((data) => {
                 const { roleName, salary, department } = data;
 
-                const departmentsql = 'SELECT department_id FROM department WHERE department_name = ?';
+                const departmentsql = 'SELECT id FROM department WHERE department_name = ?';
                 connection.query(departmentsql, [department], function (err, result) {
                     if (err) {
                         console.error('Error retrieving department_id:', err);
