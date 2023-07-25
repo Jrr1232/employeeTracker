@@ -15,7 +15,7 @@ CREATE TABLE department (
 );
 
 -- Create the role table
-CREATE TABLE roles (
+CREATE TABLE role (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(30),
     salary DECIMAL,
