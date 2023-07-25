@@ -66,13 +66,12 @@ async function init() {
                                 console.error('Error selecting manager_id:', err);
                             } else {
                                 console.log(result)
-                                connection.query(`SELECT id from role WHERE title = '${data.role}' `), function (err, roleresult) {
+                                connection.query(`SELECT id from role WHERE title = '${data.role}' `, function (err, roleresult) {
                                     if (err) {
                                         console.error(err);
-                                    }
-                                    else {
+                                    } else {
+                                        console.log(roleresult[0]); // Move this line inside the callback function here
                                         const sql = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
-                                        console.log(roleresult[0])
                                         const values = [data.fname, data.lname, roleresult[0], result[0]];
                                         console.log(data.fname)
                                         connection.query(sql, values, function (err, result) {
@@ -87,6 +86,7 @@ async function init() {
                                     }
                                 }
 
+                                )
                             }
                         })
 
@@ -113,7 +113,6 @@ async function init() {
                         }
                     ]).then(employeeAnswers => {
                         const selectedEmployee = employeeAnswers.update;
-                        // Use selectedEmployee to find the correct first_name and last_name
                         const { firstName, lastName } = results.find(employee => `${employee.first_name} ${employee.last_name}` === selectedEmployee);
 
                         connection.query(
@@ -133,11 +132,9 @@ async function init() {
                                     }
                                 ]).then(roleAnswers => {
                                     const selectedRole = roleAnswers.update_role;
-                                    const query = `UPDATE employee SET role_id = (SELECT role_id FROM role WHERE title = '${selectedRole}')     
+                                    const query = `UPDATE employee SET role_id = (SELECT id FROM role WHERE title = '${selectedRole}')     
                                     WHERE first_name = '${firstName}' AND last_name = '${lastName}';`;
-                                    connection.query(
-                                        query,
-                                        [selectedRole, selectedEmployee],
+                                    connection.query(query,
                                         function (err, results, fields) {
                                             if (err) {
                                                 console.error(err);
