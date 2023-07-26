@@ -60,20 +60,17 @@ async function init() {
                         },
                     ]).then((data) => {
                         const firstName = data.manager.split(' ', 1)
-                        console.log(firstName[0])
                         connection.query(`SELECT manager_id from employee WHERE first_name = '${firstName}'`, function (err, result) {
                             if (err) {
                                 console.error('Error selecting manager_id:', err);
                             } else {
-                                console.log(result)
-                                connection.query(`SELECT id from role WHERE title = '${data.role}' `, function (err, roleresult) {
+                                connection.query(`SELECT id from roles WHERE title = '${data.role}' `, function (err, roleresult) {
                                     if (err) {
                                         console.error(err);
                                     } else {
                                         console.log(roleresult[0]); // Move this line inside the callback function here
                                         const sql = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
-                                        const values = [data.fname, data.lname, roleresult[0], result[0]];
-                                        console.log(data.fname)
+                                        const values = [data.fname, data.lname, roleresult[0].id, result[0].id];
                                         connection.query(sql, values, function (err, result) {
                                             if (err) {
                                                 console.error('Error inserting data:', err);
@@ -113,10 +110,12 @@ async function init() {
                         }
                     ]).then(employeeAnswers => {
                         const selectedEmployee = employeeAnswers.update;
+                        console.log(selectedEmployee)
                         const { firstName, lastName } = results.find(employee => `${employee.first_name} ${employee.last_name}` === selectedEmployee);
-
+                        const employeeName = selectedEmployee.split(' ');
+                        console.log(employeeName[0])
                         connection.query(
-                            'SELECT title FROM role',
+                            'SELECT title FROM roles',
                             function (err, results, fields) {
                                 if (err) {
                                     console.error(err);
@@ -132,12 +131,15 @@ async function init() {
                                     }
                                 ]).then(roleAnswers => {
                                     const selectedRole = roleAnswers.update_role;
-                                    const query = `UPDATE employee SET role_id = (SELECT id FROM role WHERE title = '${selectedRole}')     
-                                    WHERE first_name = '${firstName}' AND last_name = '${lastName}';`;
+
+                                    const query = `UPDATE employee SET role_id = (SELECT id FROM roles WHERE title = '${selectedRole}')     
+                                    WHERE first_name = '${employeeName[0]}' AND last_name = '${employeeName[1]}'`;
                                     connection.query(query,
                                         function (err, results, fields) {
+
                                             if (err) {
                                                 console.error(err);
+
                                             } else {
                                                 console.log(`Employee ${selectedEmployee} role updated to ${selectedRole}.`);
                                             }
@@ -151,7 +153,7 @@ async function init() {
             );
         } else if (data.action === choices[3]) {
             connection.query(
-                'SELECT title FROM role',
+                'SELECT title FROM roles',
                 function (err, results, fields) {
                     if (err) {
                         console.error(err);
@@ -196,8 +198,8 @@ async function init() {
                         if (result && result.length > 0) {
 
                             const departmentId = result[0].department_id;
-                            const sql = 'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)';
-                            const values = [roleName, salary, departmentId];
+                            const sql = 'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)';
+                            const values = [roleName, salary, result[0].id];
 
                             connection.query(sql, values, function (err, result) {
                                 if (err) {
