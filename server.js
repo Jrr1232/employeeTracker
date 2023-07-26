@@ -19,7 +19,7 @@ const connection = mysql.createConnection({
         // The code for the init function (as provided in the snippet) goes here
         // Make sure to define 'choices', 'connection', and configure 'inquirer' before this function
 
-        const choices = ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department'];
+        const choices = ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department', 'Quit'];
 
         inquirer.prompt([
             {
@@ -35,7 +35,9 @@ const connection = mysql.createConnection({
                     'SELECT * FROM `employee_info`',
                     function (err, results, fields) {
                         console.table(results);
+                        init()
                     }
+
                 );
             } else if (data.action === choices[1]) {
                 console.log('Add Employee');
@@ -85,8 +87,8 @@ const connection = mysql.createConnection({
                                                     console.error('Error inserting data:', err);
                                                 } else {
                                                     console.log('New employee added successfully.');
+                                                    init()
                                                 }
-                                                connection.end();
                                             });
 
                                         }
@@ -151,6 +153,7 @@ const connection = mysql.createConnection({
 
                                                 } else {
                                                     console.log(`Employee ${selectedEmployee} role updated to ${selectedRole}.`);
+                                                    init()
                                                 }
                                             }
                                         );
@@ -172,6 +175,7 @@ const connection = mysql.createConnection({
                         else {
                             const roles = results.map(role => role.title)
                             console.log(roles)
+                            init()
 
                         }
                     })
@@ -218,11 +222,11 @@ const connection = mysql.createConnection({
                                     } else {
                                         console.log(`New role '${roleName}' added successfully.`);
                                     }
-                                    connection.end();
+                                    init()
                                 });
                             } else {
                                 console.error(`Department '${department}' not found.`);
-                                connection.end();
+                                init()
                             }
                         }
                     });
@@ -239,6 +243,7 @@ const connection = mysql.createConnection({
                         else {
                             const departments = results.map(department => department.department_name)
                             console.log(departments)
+                            init()
 
                         }
                     })
@@ -260,13 +265,21 @@ const connection = mysql.createConnection({
                             console.error('Error inserting data:', err);
                         } else {
                             console.log(`New department '${data.department_name}' added successfully.`);
+                            init()
                         }
-                        connection.end();
                     });
 
                 })
 
-            } else {
+            } else if (data.action === choices[7]) {
+                process.exit()
+
+
+            }
+
+
+
+            else {
                 console.log('Invalid choice.');
             }
         }).catch((error) => {
