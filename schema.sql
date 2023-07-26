@@ -15,7 +15,7 @@ CREATE TABLE department (
 );
 
 -- Create the role table
-CREATE TABLE role (
+CREATE TABLE roles (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(30),
     salary DECIMAL,
@@ -32,7 +32,7 @@ CREATE TABLE employee (
     role_id INT,
     manager_id INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (role_id) REFERENCES role (id)
+    FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
 -- Create a view to combine employee, role, and department information
@@ -44,5 +44,6 @@ SELECT
   d.department_name,
   r.salary
 FROM employee e
-JOIN role r ON e.role_id = r.id
-JOIN department d ON r.department_id = d.id;
+LEFT JOIN roles r ON e.role_id = r.id
+INNER JOIN department d ON r.department_id = d.id;
+

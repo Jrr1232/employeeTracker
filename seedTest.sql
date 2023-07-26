@@ -1,2 +1,2 @@
-UPDATE employee SET role_id = (SELECT id FROM role WHERE title = 'Back End')     
-                                    WHERE first_name = 'Junior' AND last_name = 'Gomez'
+UPDATE employee SET role_id = (SELECT id FROM roles WHERE title = 'Sales Rep')     
+                                    WHERE first_name = 'Alex' AND last_name = 'Jones';
