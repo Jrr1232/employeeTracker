@@ -9,7 +9,7 @@ USE company_db;
 
 -- Create the department table
 CREATE TABLE department (
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   department_name VARCHAR(30),
   PRIMARY KEY (id)
 );
