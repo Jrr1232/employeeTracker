@@ -7,7 +7,7 @@
 
 ## 🤔 Introduction
 
- Command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL. WIll be able to view and manage the departments, roles, and employees in my company.This will help users organize and plan their business.This project uses Node.Js, Inquirer, and MYSQL.
+ Command-line application to manage a company's employee database, using Node.js, Inquirer, and MySQL. Users will be able to view and manage the departments, roles, and employees in my company.This will help users organize and plan their business.This project uses Node.Js, Inquirer, and MYSQL.
 
 
 
