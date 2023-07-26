@@ -1,7 +1,6 @@
  
  
-![Static Badge](https://img.shields.io/badge/license--yellow)
-
+![Static Badge](https://img.shields.io/badge/license-GNU_General_Public_License_v3.0-yellow)
 
 # Employee Tracker
 
